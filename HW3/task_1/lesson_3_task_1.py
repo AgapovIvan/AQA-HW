@@ -1,4 +1,4 @@
-from user import User
+from HW3.task_1.user import User
 
 my_user = User("John", "Doe")
 

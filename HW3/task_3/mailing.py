@@ -1,4 +1,4 @@
-from address import Address
+from HW3.task_3.address import Address
 
 class Mailing:
     def __init__(self, to_address, from_address, cost, track):

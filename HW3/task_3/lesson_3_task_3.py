@@ -1,5 +1,5 @@
-from address import Address
-from mailing import Mailing
+from HW3.task_3.address import Address
+from HW3.task_3.mailing import Mailing
 
 to_address = Address("123456", "City1", "Street1", "1", "A")
 from_address = Address("654321", "City2", "Street2", "2", "B")

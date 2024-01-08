@@ -1,4 +1,4 @@
-from smartphone import Smartphone
+from HW3.task_2.smartphone import Smartphone
 
 catalog = [
     Smartphone("Samsung", "Galaxy S21", "+79123456789"),
