@@ -31,17 +31,13 @@ def positionAlongCircle(x, y, radius, angle):
   return [x + (radius*math.sin(radians)),
             y + (radius*math.cos(radians))]
 
-
 movePenY(cursor, -150)
 cursor.circle(150)
-
 
 noseMouthOffset = -15
 
 movePenY(cursor, -20 + noseMouthOffset)
 cursor.circle(20)
-
-
 
 movePen(cursor, -100, -20 + noseMouthOffset)
 cursor.right(90)
@@ -49,29 +45,19 @@ cursor.circle(50, 180)
 cursor.left(180)
 cursor.circle(50, 180)
 
-
-
 eyeSpacingX = 30
 eyePosY = 40
 eyeRadius = 30
-
 
 movePen(cursor, eyeSpacingX, eyePosY)
 cursor.right(180)
 cursor.circle(eyeRadius, -180)
 
-
 movePen(cursor, -eyeSpacingX, eyePosY)
 cursor.circle(eyeRadius, 180)
 
-
-
 movePen(cursor, -20, -60 + noseMouthOffset)
 cursor.circle(20, 180)
-
-
-
-
 
 earBeginAngle = 25
 earSize = 85
@@ -85,8 +71,6 @@ cursor.setposition(positionB[0], positionB[1])
 positionC = positionAlongCircle(0, 0, 150, earBeginAngle + earWidth * 2)
 cursor.setposition(positionC[0], positionC[1])
 
-
-
 positionA = positionAlongCircle(0, 0, 150, -earBeginAngle)
 movePen(cursor, positionA[0], positionA[1])
 
@@ -96,10 +80,7 @@ cursor.setposition(positionB[0], positionB[1])
 positionC = positionAlongCircle(0, 0, 150, -earBeginAngle + -earWidth * 2)
 cursor.setposition(positionC[0], positionC[1])
 
-
-
 whiskerLength = 180
-
 
 movePen(cursor, 50, -15)
 cursor.setheading(0)
@@ -108,7 +89,6 @@ cursor.forward(whiskerLength)
 movePen(cursor, 50, 0)
 cursor.left(5)
 cursor.forward(whiskerLength)
-
 
 movePen(cursor, -50, -15)
 cursor.setheading(180)
