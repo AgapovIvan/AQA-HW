@@ -1,24 +1,41 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from page_objects import BasePage
 
-class CalculatorPage(BasePage):
-    def open(self):
-        self.driver.get("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html")
+class CalculatorPage:
+    def __init__(self, driver):
+        self.driver = driver
 
-    def enter_delay_value(self, value):
+    def open_page(self, url):
+        # Открываем указанную страницу
+        self.driver.get(url)
+
+    def enter_delay_value(self, delay_value):
+        # Находим поле ввода и вводим в него заданное значение
         delay_input = self.driver.find_element(By.CSS_SELECTOR, "#delay")
         delay_input.clear()
-        delay_input.send_keys(value)
+        delay_input.send_keys(delay_value)
 
-    def perform_calculation(self, num1, operator, num2):
-        self.driver.find_element(By.ID, f"btn_{num1}").click()
-        self.driver.find_element(By.ID, f"btn_{operator}").click()
-        self.driver.find_element(By.ID, f"btn_{num2}").click()
-        self.driver.find_element(By.ID, "btn_equals").click()
+    def click_button(self, button_text):
+        # Находим кнопку по тексту и кликаем на нее
+        button_locator = f"//span[contains(@class, 'btn-outline-primary') and text()='{button_text}']"
+        button = self.driver.find_element(By.XPATH, button_locator)
+        button.click()
 
-    def get_result_after_delay(self, result, delay):
-        WebDriverWait(self.driver, delay).until(
-            EC.text_to_be_present_in_element((By.ID, "display"), str(result))
+    def click_operator_button(self, operator):
+        operator_locator = f"//span[contains(@class, 'operator') and text()='{operator}']"
+        operator_button = self.driver.find_element(By.XPATH, operator_locator)
+        operator_button.click()
+
+    def click_equals_button(self):
+        equals_locator = "//span[contains(@class, 'btn-outline-warning') and text()='=']"
+        equals_button = self.driver.find_element(By.XPATH, equals_locator)
+        equals_button.click()
+
+    def get_result_text(self):
+        # Ожидаем появление элемента "screen" и возвращаем его текст
+        result_element = WebDriverWait(self.driver, 45).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div.screen"))
         )
+        return result_element.text
+    
