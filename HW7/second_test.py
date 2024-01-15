@@ -1,8 +1,9 @@
-from time import sleep
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
 
 class Calculator:
 
@@ -29,7 +30,13 @@ def test_check_calculator_result():
     calculator = Calculator(browser)
     calculator.delay("45")
     calculator.button()
-    sleep(49)
+
+    # Используем явные ожидания для ожидания появления результата в течение 46 секунд
+    WebDriverWait(browser, 46).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR, '#calculator > div.top > div'), '15')
+    )
+
     result = calculator.result()
     assert result == "15"
     browser.quit()
+
