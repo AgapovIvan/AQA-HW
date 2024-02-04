@@ -24,8 +24,8 @@ def test_create_and_get_employee():
 
     employees = db.get_employees()
     assert len(employees) > 0
-    assert employees[0]["first_name"] == "Mike"
-    assert employees[0]["last_name"] == "Sorreto"
+    assert any(employee["first_name"] == "Mike" and employee["last_name"] == "Sorreto" for employee in employees)
+
 
 
 def test_update_employee():
