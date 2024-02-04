@@ -20,12 +20,16 @@ def test_create_and_get_employee():
     company = api.create_company(name, descr)
     new_id = company["id"]
 
+    len_before = len(db.get_employees())
+
     db.insert_employee("Mike", "Sorreto", "+123456789", new_id)
 
-    employees = db.get_employees()
-    assert len(employees) > 0
-    assert any(employee["first_name"] == "Mike" and employee["last_name"] == "Sorreto" for employee in employees)
+    len_after = len(db.get_employees())
 
+    assert len_after - len_before == 1
+
+    employee_list = api.get_list_employee(new_id)
+    assert any(employee["firstName"] == "Mike" and employee["lastName"] == "Sorreto" for employee in employee_list)
 
 
 def test_update_employee():
@@ -37,18 +41,18 @@ def test_update_employee():
     db.insert_employee("Jane", "Doe", "+123456789", new_id)
 
     employees = db.get_employees()
-    assert len(employees) > 1
+    assert len(employees) > 0
 
     employee_id = employees[0]["id"]
     db.update_employee(employee_id, "Jane", "Doe", "Middle", "+987654321", "jane.doe@example.com", "http://example.com")
 
     updated_employee = db.get_employees()[0]
-    assert updated_employee["first_name"] != "Jane"
-    assert updated_employee["last_name"] != "Doe"
-    assert updated_employee["middle_name"] != "Middle"
-    assert updated_employee["phone"] != "+987654321"
-    assert updated_employee["email"] != "jane.doe@example.com"
-    assert updated_employee["avatar_url"] != "http://example.com"
+    assert updated_employee["first_name"] == "Jane"
+    assert updated_employee["last_name"] == "Doe"
+    assert updated_employee["middle_name"] == "Middle"
+    assert updated_employee["phone"] == "+987654321"
+    assert updated_employee["email"] == "jane.doe@example.com"
+    assert updated_employee["avatar_url"] == "http://example.com"
 
 
 def test_delete_employee():
@@ -59,10 +63,13 @@ def test_delete_employee():
 
     db.insert_employee("John", "Doe", "+123456789", new_id)
 
+    len_before = len(db.get_employees())
+
     employees = db.get_employees()
-    assert len(employees) > 1
 
     employee_id = employees[0]["id"]
     db.delete_employee(employee_id)
 
-    assert len(db.get_employees()) != 0
+    len_after = len(db.get_employees())
+
+    assert len_before - len_after == 1
