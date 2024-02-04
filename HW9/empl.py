@@ -1,7 +1,5 @@
 import requests
-from faker import Faker
 
-fake = Faker()
 
 class Company:
 
@@ -37,30 +35,30 @@ class Company:
         resp = requests.get(f"{self.url}/employee/{id_employee}")
         return resp.json()
 
-    def add_new_employee(self, new_id, name, last_name, email, phone, birthdate):
+    def add_new_employee(self, new_id, name, last_name):
         employee = {
-            "id": fake.random_int(min=1, max=1000),  # Генерация случайного числа для id
+            "id": 1,
             "firstName": name,
             "lastName": last_name,
-            "middleName": fake.last_name(),  # Генерация случайной фамилии в качестве отчества
+            "middleName": "-",
             "companyId": new_id,
-            "email": email,
-            "url": fake.url(),
-            "phone": phone,
-            "birthdate": birthdate,
-            "isActive": True
+            "email": "test@test.ru",
+            "url": "string",
+            "phone": "89999999999",
+            "birthdate": "2023-12-25T18:54:13.783Z",
+            "isActive": 'true'
         }
 
         my_headers = {}
         my_headers["x-client-token"] = self.get_token()
         resp = requests.post(f"{self.url}/employee", headers=my_headers, json=employee)
         return resp.json()
-    
-    def update_employee_info(self, id_employee, last_name, email, is_active=True):
+
+    def update_employee_info(self, id_employee, last_name, email):
         user_info = {
             "lastName": last_name,
             "email": email,
-            "isActive": is_active
+            "isActive": True
         }
 
         my_headers = {}
