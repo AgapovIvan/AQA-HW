@@ -18,17 +18,17 @@ def test_create_and_get_employee():
     name = "SkyPro"
     descr = "testing"
     company = api.create_company(name, descr)
-    new_id = company["id"]
+    new_company_id = company["id"]
 
     len_before = len(db.get_employees())
 
-    db.insert_employee("Mike", "Sorreto", "+123456789", new_id)
+    db.insert_employee("Mike", "Sorreto", "+123456789", new_company_id)
 
     len_after = len(db.get_employees())
 
     assert len_after - len_before == 1
 
-    employee_list = api.get_list_employee(new_id)
+    employee_list = api.get_list_employee(new_company_id)
     assert any(employee["firstName"] == "Mike" and employee["lastName"] == "Sorreto" for employee in employee_list)
 
 
