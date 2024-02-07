@@ -2,7 +2,8 @@ from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.sql import text
 
 
-class EmplTable:
+
+class BD:
     __scripts = {
         "create": text("""
             CREATE TABLE IF NOT EXISTS employee (
@@ -34,25 +35,25 @@ class EmplTable:
     }
 
     def __init__(self, connection_string):
-        self.__db = create_engine(connection_string, encoding='utf-8')
-        self.__metadata = MetaData(bind=self.__db)
+        self.db = create_engine(connection_string, encoding='utf-8')
+        self.__metadata = MetaData(bind=self.db)
         self.__table = Table('employee', self.__metadata, autoload=True)
 
     def create_table(self):
-        self.__db.execute(self.__scripts["create"])
+        self.db.execute(self.__scripts["create"])
 
     def get_employees(self):
-        return self.__db.execute(self.__scripts["select"]).fetchall()
+        return self.db.execute(self.__scripts["select"]).fetchall()
 
     def insert_employee(self, first_name, last_name, phone, company_id):
-        return self.__db.execute(self.__scripts["insert"],
+        return self.db.execute(self.__scripts["insert"],
                                  first_name=first_name,
                                  last_name=last_name,
                                  phone=phone,
                                  company_id=company_id)
 
     def update_employee(self, employee_id, first_name, last_name, middle_name, phone, email, avatar_url):
-        return self.__db.execute(self.__scripts["update"],
+        return self.db.execute(self.__scripts["update"],
                                  employee_id=employee_id,
                                  first_name=first_name,
                                  last_name=last_name,
@@ -62,8 +63,8 @@ class EmplTable:
                                  avatar_url=avatar_url)
     
     def get_employee_by_id(self, employee_id):
-        result = self.__db.execute(self.__scripts["get_employee_by_id"], employee_id=employee_id)
+        result = self.db.execute(self.__scripts["get_employee_by_id"], employee_id=employee_id)
         return result.fetchone()
 
     def delete_employee(self, employee_id):
-        return self.__db.execute(self.__scripts["delete"], employee_id=employee_id)
+        return self.db.execute(self.__scripts["delete"], employee_id=employee_id)
