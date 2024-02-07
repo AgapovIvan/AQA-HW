@@ -3,7 +3,7 @@ from EmplTable import EmplTable
 import pytest
 
 api = Company("https://x-clients-be.onrender.com")
-db = EmplTable("postgresql://x_clients_user:axcmq7V3QLCQwgL39GymqgasJhUlDbH4@dpg-cl53o6ql7jac73cbgi2g-a.frankfurt-postgres.render.com:5432/x_clients")
+db = EmplTable("postgresql://x_clients_user:x7ngHjC1h08a85bELNifgKmqZa8KIR40@dpg-cn1542en7f5s73fdrigg-a.frankfurt-postgres.render.com/x_clients_xxet")
 
 
 def setup_module(module):
@@ -33,43 +33,28 @@ def test_create_and_get_employee():
 
 
 def test_update_employee():
-    name = "SkyPro"
-    descr = "testing"
-    company = api.create_company(name, descr)
-    new_id = company["id"]
-
-    db.insert_employee("Jane", "Doe", "+123456789", new_id)
-
+    
     employees = db.get_employees()
     assert len(employees) > 0
 
     employee_id = employees[0]["id"]
     db.update_employee(employee_id, "Jane", "Doe", "Middle", "+987654321", "jane.doe@example.com", "http://example.com")
 
-    updated_employee = db.get_employees()[0]
-    assert updated_employee["first_name"] == "Jane"
-    assert updated_employee["last_name"] == "Doe"
-    assert updated_employee["middle_name"] == "Middle"
-    assert updated_employee["phone"] == "+987654321"
-    assert updated_employee["email"] == "jane.doe@example.com"
-    assert updated_employee["avatar_url"] == "http://example.com"
+    updated_employee = db.get_employees()
+    assert updated_employee[0]["first_name"] == "Jane"
+    assert updated_employee[0]["last_name"] == "Doe"
+    assert updated_employee[0]["middle_name"] == "Middle"
+    assert updated_employee[0]["phone"] == "+987654321"
+    assert updated_employee[0]["email"] == "jane.doe@example.com"
+    assert updated_employee[0]["avatar_url"] == "http://example.com"
 
 
 def test_delete_employee():
-    name = "SkyPro"
-    descr = "testing"
-    company = api.create_company(name, descr)
-    new_id = company["id"]
-
-    db.insert_employee("John", "Doe", "+123456789", new_id)
-
-    len_before = len(db.get_employees())
 
     employees = db.get_employees()
 
     employee_id = employees[0]["id"]
     db.delete_employee(employee_id)
 
-    len_after = len(db.get_employees())
-
-    assert len_before - len_after == 1
+    deleted_employee = db.get_employee_by_id(employee_id)
+    assert deleted_employee is None

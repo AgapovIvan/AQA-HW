@@ -28,7 +28,8 @@ class EmplTable:
             middle_name = :middle_name, phone = :phone, email = :email, avatar_url = :avatar_url
             WHERE id = :employee_id
         """),
-        "delete": text("DELETE FROM employee WHERE id = :employee_id")
+        "delete": text("DELETE FROM employee WHERE id = :employee_id"),
+        "get_employee_by_id" : text("SELECT * FROM employee WHERE id = :employee_id")
     }
 
     def __init__(self, connection_string):
@@ -58,6 +59,10 @@ class EmplTable:
                                  phone=phone,
                                  email=email,
                                  avatar_url=avatar_url)
+    
+    def get_employee_by_id(self, employee_id):
+        result = self.__db.execute(self.__scripts["get_employee_by_id"], employee_id=employee_id)
+        return result.fetchone()
 
     def delete_employee(self, employee_id):
         return self.__db.execute(self.__scripts["delete"], employee_id=employee_id)
