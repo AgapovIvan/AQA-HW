@@ -41,20 +41,22 @@ def test_update_employee():
     db.update_employee(employee_id, "Jane", "Doe", "Middle", "+987654321", "jane.doe@example.com", "http://example.com")
 
     updated_employee = db.get_employees()
-    assert updated_employee[0]["first_name"] == "Jane"
-    assert updated_employee[0]["last_name"] == "Doe"
-    assert updated_employee[0]["middle_name"] == "Middle"
-    assert updated_employee[0]["phone"] == "+987654321"
-    assert updated_employee[0]["email"] == "jane.doe@example.com"
-    assert updated_employee[0]["avatar_url"] == "http://example.com"
+    assert updated_employee[-1]["first_name"] == "Jane"
+    assert updated_employee[-1]["last_name"] == "Doe"
+    assert updated_employee[-1]["middle_name"] == "Middle"
+    assert updated_employee[-1]["phone"] == "+987654321"
+    assert updated_employee[-1]["email"] == "jane.doe@example.com"
+    assert updated_employee[-1]["avatar_url"] == "http://example.com"
 
 
-def test_delete_employee():
+def test_delete_all_employees():
 
     employees = db.get_employees()
 
-    employee_id = employees[0]["id"]
-    db.delete_employee(employee_id)
+    for employee in employees:
+        employee_id = employee["id"]
+        db.delete_employee(employee_id)
 
-    deleted_employee = db.get_employee_by_id(employee_id)
-    assert deleted_employee is None
+    employees_after_deletion = db.get_employees()
+    assert len(employees_after_deletion) == 0
+
